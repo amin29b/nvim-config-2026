@@ -1,0 +1,273 @@
+local M = {}
+local function SpellCheck(arg)
+    local spell_restore = vim.o.spell
+    vim.o.spell = true
+
+    vim.api.nvim_create_augroup("restore_spell_option", { clear = true })
+
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CompleteDone" }, {
+        buffer = 0,
+        group = "restore_spell_option",
+        once = true,
+        callback = function()
+            vim.o.spell = spell_restore
+            vim.api.nvim_del_augroup_by_name("restore_spell_option")
+        end,
+    })
+
+    return arg or ""
+end
+
+
+
+function M.setup()
+    local opts = { noremap = true, silent = true }
+    local opts2 = { remap = true, silent = true }
+    -- vim.keymap.set("n", "<PageUp>", "<Nop>")
+    -- vim.keymap.set("n", "<PageDown>", "<Nop>")
+
+    -- -- Space
+    vim.keymap.set("n", "<Space>", "<Nop>")
+    vim.keymap.set("v", "<Space>", "<Nop>")
+
+    -- Ctrl-Space
+    vim.keymap.set("n", "<C-Space>", "<Nop>")
+    vim.keymap.set("v", "<C-Space>", "<Nop>")
+    vim.keymap.set("i", "<C-Space>", "<Nop>")
+
+    -- Ctrl-C
+    vim.keymap.set("n", "<C-c>", "<Nop>")
+    vim.keymap.set("v", "<C-c>", "<Nop>")
+    vim.keymap.set("i", "<C-c>", "<Esc>")
+    vim.keymap.set("n", "<C-c>", ":nohl<CR>")
+
+    vim.keymap.set("n", "J", "mzJ`z")
+
+    vim.keymap.set("n", "þ", "<Nop>")
+    vim.keymap.set("v", "þ", "<Nop>")
+    vim.keymap.set("i", "þ", "<Nop>")
+
+    vim.keymap.set("n", "ý", "<Nop>")
+    vim.keymap.set("v", "ý", "<Nop>")
+    vim.keymap.set("i", "ý", "<Nop>")
+
+    vim.keymap.set("n", "<C-S-b>", "<Nop>")
+    vim.keymap.set("n", "<C-S-B>", "<Nop>")
+
+    vim.keymap.set("v", ">", ">gv")
+    vim.keymap.set("v", "<", "<gv")
+
+    vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+    vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+    -- Insert mode
+    vim.keymap.set("i", "<C-j>", "<Nop>")
+    -- vim.keymap.set("i", "<C-h>", "<Nop>", { remap = true })
+
+    -- i for Insert mode
+    -- c for Command-line mode
+    -- t for Terminal mode
+    vim.keymap.set({ "i", "c", "t" }, "<C-h>", "<left>")
+    vim.keymap.set({ "i", "c", "t" }, "<C-j>", "<down>")
+    vim.keymap.set({ "i", "c", "t" }, "<C-k>", "<up>")
+    vim.keymap.set({ "i", "c", "t" }, "<C-l>", "<right>")
+
+    vim.keymap.set("n", "<C-l>", "<Nop>")
+
+
+    -- Normal mode
+    vim.keymap.set("n", "<leader>so", ":source $MYVIMRC<CR>", opts)
+    vim.keymap.set("n", "<leader>no", ":noh<CR>", opts)
+
+    vim.keymap.set("i", "<C-x><C-k>", function()
+        return SpellCheck("<C-x><C-k>")
+    end, { expr = true, noremap = true })
+
+    vim.keymap.set("n", "z=", function()
+        SpellCheck()
+        vim.cmd("normal! z=")
+    end, { noremap = true, silent = true })
+
+    vim.keymap.set("n", "<F6>", function()
+        vim.fn.setreg("+", vim.fn.fnamemodify(vim.fn.expand("%"), ":p"))
+    end, { noremap = true, silent = true })
+
+    vim.keymap.set("n", "<leader>jo", '<cmd>MyProjectJumps<cr>')
+    vim.keymap.set("n", "<leader>jj", '<cmd>AddProjectJump<cr>')
+
+    vim.keymap.set({ "n" }, "<leader>js", '<cmd>MyProjectSnippets<cr>')
+
+    -- vim.keymap.set("n", "<leader>jo", '<cmd>MyJumps<cr>')
+    -- vim.keymap.set("n", "<leader>jj", '<cmd>lua add_jump()<cr>')
+
+    -- vim.keymap.set("n", "<leader>ju", '<cmd>Jumps<cr>')
+
+    local skComment = require("comment");
+    vim.keymap.set('n', '<C-k><C-c>', skComment.comment, { expr = true, desc = 'Comment line' })
+    vim.keymap.set('n', '<C-k><C-u>', skComment.uncomment, { expr = true, desc = 'Uncomment line' })
+
+    vim.keymap.set('v', '<C-k><C-c>', skComment.comment_gv, { expr = true, desc = 'Comment line' })
+    vim.keymap.set('v', '<C-k><C-u>', skComment.uncomment_gv, { expr = true, desc = 'Uncomment line' })
+
+    vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+    vim.keymap.set("n", "<leader>B", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
+    vim.keymap.set("n", "<leader>bb", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
+    vim.keymap.set("n", "<leader>rr", "<CMD>HotRelaod<CR>", { noremap = true, desc = "HotRelaod Project" })
+
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "oil",
+        callback = function()
+            vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true, })
+            vim.keymap.set("n", "", "<cmd>close<CR>", { buffer = true, silent = true, })
+        end,
+    })
+
+    vim.keymap.set("n", "*", function()
+        vim.fn.setreg("/", "\\c" .. vim.fn.expand("<cword>"))
+        vim.cmd("normal! n")
+    end, { noremap = true })
+
+    -- vim.keymap.set("n", "#", function()
+    --     vim.fn.setreg("/", vim.fn.expand("<cword>"))
+    -- or
+    -- vim.fn.setreg("/", "\\c" .. vim.fn.expand("<cword>"))
+    --     vim.cmd("normal! N")
+    -- end, { noremap = true })
+    vim.keymap.set("v", "<leader>tt",
+        function()
+            require("tabular").tabular()
+        end
+        , opts)
+
+    vim.cmd([[
+        nnoremap <space><space> <Esc>/\$\$\$\$<Enter>"_c4l
+
+        " Markers
+        nnoremap mm <Esc><Esc>/\/\*x\*\/<Enter>zz
+        nnoremap MM <Esc><Esc>?\/\*x\*\/<Enter>zz
+        nnoremap ms <Esc><Esc>/\/\/\s*[=]\+.*$<Enter>zz
+        nnoremap MS <Esc><Esc>?\/\/\s*[=]\+.*$<Enter>zz
+
+        nnoremap mn <Esc><Esc>o/*x*/<Esc>
+        nnoremap md <Esc><Esc>"_5r<space>4h<Esc>
+    ]])
+
+    vim.keymap.set("v", "<space>dd", [[:<C-u>'<,'>s/\s\+$//e | noh<CR>]])
+    vim.keymap.set("n", "<space>dd", [[<CMD>s/\s\+$//e | noh<CR>]] )
+
+    vim.keymap.set("n", "n", "nzzzv" , {});
+    vim.keymap.set("n", "N", "Nzzzv" , {});
+
+    vim.keymap.set("n", "<C-d>", "<C-d>zz" , {});
+    vim.keymap.set("n", "<C-u>", "<C-u>zz" , {});
+
+
+    vim.keymap.set("n", "<leader>U",
+        function()
+            vim.cmd.packadd("nvim.undotree");
+            require("undotree").open();
+        end ,
+        {});
+
+
+
+end
+
+function M.lsp_mappings(bufnr)
+    local opts = { buffer = bufnr }
+
+    vim.keymap.set("n", "<F12>", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<F11>", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<C-k><C-l>", vim.lsp.buf.references, opts)
+
+    vim.keymap.set("n", "<C-k><C-d>", vim.lsp.buf.format, opts)
+    vim.keymap.set("n", "<C-k><C-r>", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "<C-k><C-i>", function()
+        vim.lsp.buf.hover({ border = "single" })
+    end, opts)
+
+
+    -- Diagnostics
+    vim.keymap.set("n", "<leader>lp", function()
+        vim.diagnostic.setqflist({ severity = { min = vim.diagnostic.severity.WARN } })
+    end, opts)
+
+    -- NOTE(^min): use ]q  and  [q
+    -- vim.keymap.set("n", "<leader>l]", '<cmd>cnext<cr>', opts)
+    -- vim.keymap.set("n", "<leader>l[", '<cmd>cprevious<cr>', opts)
+
+    vim.keymap.set("n", "<leader>lo", function()
+        vim.diagnostic.open_float({ border = "single" })
+    end, opts)
+
+
+    -- Code actions
+    -- "<C-.> -> ý
+    vim.keymap.set("n", "ý", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("v", "ý", vim.lsp.buf.code_action, opts)
+    -- vim.keymap.set("i", "þ", "<C-x><C-o>", opts)
+
+
+end
+
+function M.fzf_vim()
+    -- local opts = { buffer = bufnr }
+    local opts = {}
+
+    vim.keymap.set("n", "<leader>/", "<cmd>BLines<cr>", opts)
+
+    vim.keymap.set("v", "<leader>/",
+        function() -- grep visual selection in current buffer
+            local query = require("utils").get_visual_selection()
+            if query == "" then
+                return
+            end
+            vim.cmd("BLines " .. query)
+        end
+        , opts)
+
+
+
+    vim.keymap.set("n", "<leader>g/",
+        function()
+            local cwd = require("utils").FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/") -- IMPORTANT on Windows
+            vim.cmd(string.format([[
+                call fzf#vim#grep(
+                \   'rg  --with-filename  --column --line-number --no-heading --color=always --smart-case '.shellescape(""),
+                \       1,
+                \       fzf#vim#with_preview({ 'dir' : '%s' ,'options': '--delimiter : --nth 3..'},'down', 'ctrl-/'),
+                \       !0
+                \   )
+            ]], cwd))
+        end
+        , opts)
+
+
+    -- fndprjroot
+    vim.keymap.set("v", "<leader>g/",
+        function()
+            local query = require("utils").get_visual_selection()
+            if query == "" then
+                return
+            end
+            local cwd = require("utils").FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/") -- IMPORTANT on Windows
+
+            vim.cmd(string.format([[
+                call fzf#vim#grep(
+                \   'rg  --with-filename  --column --line-number --no-heading --color=always --smart-case '.shellescape(""),
+                \       1,
+                \       fzf#vim#with_preview({  'dir' : '%s' ,'options': '--query="%s"   --delimiter : --nth 3..'},'down', 'ctrl-/'),
+                \       !0
+                \   )
+            ]], cwd, vim.fn.shellescape(query)))
+        end
+        , opts)
+
+    vim.keymap.set("n", "<leader>ls",
+        function()
+            vim.cmd("Buffers")
+        end
+        , opts)
+end
+
+return M
