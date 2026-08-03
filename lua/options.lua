@@ -39,7 +39,7 @@ vim.o.smartcase      = true
 -- vim.opt.completeopt  = { "menu", "menuone", "popup", "fuzzy", "noselect", "nosort"}
 vim.opt.completeopt  = { "menuone", "noselect", "fuzzy", "nosort" }
 vim.opt.shortmess:append("c")
-vim.opt.clipboard:append("unnamedplus");
+-- vim.opt.clipboard:append("unnamedplus");
 vim.opt.isfname:append("@-@");
 
 vim.o.ruler         = true

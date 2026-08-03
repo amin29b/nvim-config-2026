@@ -109,18 +109,18 @@ function M.setup()
     vim.keymap.set('v', '<C-k><C-c>', skComment.comment_gv, { expr = true, desc = 'Comment line' })
     vim.keymap.set('v', '<C-k><C-u>', skComment.uncomment_gv, { expr = true, desc = 'Uncomment line' })
 
-    vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+    -- vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
     vim.keymap.set("n", "<leader>B", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
     vim.keymap.set("n", "<leader>bb", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
     vim.keymap.set("n", "<leader>rr", "<CMD>HotRelaod<CR>", { noremap = true, desc = "HotRelaod Project" })
 
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = "oil",
-        callback = function()
-            vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true, })
-            vim.keymap.set("n", "", "<cmd>close<CR>", { buffer = true, silent = true, })
-        end,
-    })
+    -- vim.api.nvim_create_autocmd("FileType", {
+    --     pattern = "oil",
+    --     callback = function()
+    --         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true, })
+    --         vim.keymap.set("n", "", "<cmd>close<CR>", { buffer = true, silent = true, })
+    --     end,
+    -- })
 
     vim.keymap.set("n", "*", function()
         vim.fn.setreg("/", "\\c" .. vim.fn.expand("<cword>"))
