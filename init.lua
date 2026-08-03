@@ -142,23 +142,29 @@ require("mini.cmdline").setup({
     autocorrect = { enable = false, },
 });
 
-local MiniFiles = require("mini.files");
-local MiniPick = require("mini.pick");
-local MiniExtra = require("mini.extra");
+local MiniFiles      = require("mini.files");
+local MiniPick       = require("mini.pick");
+local MiniExtra      = require("mini.extra");
 local MiniCompletion = require('mini.completion');
+local MiniDiff       = require("mini.diff");
+local MiniStarter    = require("mini.starter");
 
 
 MiniFiles.setup({
     content = {
-        prefix = function()
-            return ""
+        prefix = function(fs_entry)
+            if fs_entry.fs_type == "directory" then
+                return "/";
+            end
+
+            return "";
         end,
     },
     mappings = {
         go_in       = "<CR>",
-        go_in_plus  = "L",
+        go_in_plus  = "H",
         go_out      = "_",
-        go_out_plus = "H",
+        go_out_plus = "L",
     },
 });
 
@@ -251,14 +257,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 });
 
-local MiniDiff = require("mini.diff");
 MiniDiff.setup({
     view = {
         style = "sign",
     },
 });
 
-local MiniStarter = require("mini.starter");
 MiniStarter.setup({
     header = "",
     items = {
@@ -342,25 +346,17 @@ vim.api.nvim_create_autocmd("User", {
     end,
 });
 
-vim.api.nvim_set_hl(0, "MiniDiffSignAdd", {
-    fg = "#2f662f",
-});
-
-vim.api.nvim_set_hl(0, "MiniDiffSignChange", {
-    fg = "#1f3fbb",
-});
-
-vim.api.nvim_set_hl(0, "MiniDiffSignDelete", {
-    fg = "#883f3f",
-});
+vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#2f662f", });
+vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#1f3fbb", });
+vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#882f2f", });
 
 local MiniHiPatterns = require("mini.hipatterns");
 MiniHiPatterns.setup({
     highlighters = {
-        fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-        hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-        todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-        note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+        fixme     = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+        hack      = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+        todo      = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+        note      = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
         hex_color = MiniHiPatterns.gen_highlighter.hex_color(),
     },
 });
