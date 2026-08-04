@@ -1,10 +1,10 @@
-local vim = vim;
-local o = vim.opt;
-local g = vim.g;
-local map = vim.keymap.set;
-local autocmd = vim.api.nvim_create_autocmd;
-local augroup = vim.api.nvim_create_augroup("user.cfg", { clear = true });
-local usercmd = vim.api.nvim_create_user_command;
+local vim            = vim;
+local o              = vim.opt;
+local g              = vim.g;
+local map            = vim.keymap.set;
+local autocmd        = vim.api.nvim_create_autocmd;
+local augroup        = vim.api.nvim_create_augroup("user.cfg", { clear = true });
+local usercmd        = vim.api.nvim_create_user_command;
 local path_nvim_data = vim.fn.stdpath('data');
 
 local MiniIcons      = require("mini.icons");
@@ -42,11 +42,32 @@ MiniCompletion.setup({
         signature = { height = 25, width = 80, border = nil },
     },
 });
-MiniDiff.setup({
-    view = {
-        style = "sign",
-    },
-});
+MiniDiff.setup(
+    {
+        view = {
+            style = "sign",
+        },
+        options = {
+            -- Diff algorithm (see `:h vim.text.diff()`)
+            -- algorithm = 'histogram',
+            -- algorithm = 'myers',
+            algorithm = 'patience',
+        }
+    }
+);
+
+map("n", "<leader>go", MiniDiff.toggle_overlay);
+map("n", "<leader>td", function()
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "Toggle diagnostics" })
+
+usercmd("ToggleDiagnostics", function()
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, {});
+usercmd("ToggleDiff", function()
+    MiniDiff.toggle_overlay();
+end, {});
+
 
 MiniStarter.setup({
     header = "",
@@ -58,16 +79,25 @@ MiniStarter.setup({
     footer = "",
 });
 
-map("n", "<C-\\><C-e>", function()
-    MiniExtra.pickers.diagnostic();
-end);
+map("n", "<C-\\><C-e>", MiniExtra.pickers.diagnostic);
 
 
 
+local hl = vim.api.nvim_set_hl;
+hl(0, "MiniDiffSignAdd", { fg = "#2f662f", });
+hl(0, "MiniDiffOverAdd", { bg = "#0d4928", });
 
-vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#2f662f", });
-vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#1f3fbb", });
-vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#882f2f", });
+hl(0, "MiniDiffSignChange", { fg = "#1f3fbb", });
+hl(0, "MiniDiffOverChange", { bg = "#1f3f99", });
+hl(0, "MiniDiffOverChangeBuf", { bg = "#1f3f99", });
+
+hl(0, "MiniDiffSignDelete", { fg = "#662f2f", });
+hl(0, "MiniDiffOverDelete", { bg = "#662f2f", });
+hl(0, "MiniDiffOverDeleteBuf", { bg = "#662f2f", });
+
+local normal = vim.api.nvim_get_hl(0, { name = "Normal" });
+hl(0, "MiniDiffOverContext", { bg = "#005555", });
+hl(0, "MiniDiffOverContextBuf", { bg = normal.guibg, });
 
 local MiniHiPatterns = require("mini.hipatterns");
 MiniHiPatterns.setup({
