@@ -19,9 +19,9 @@ local MiniStarter    = require("mini.starter");
 
 -- MiniIcons.setup();
 MiniIcons.tweak_lsp_kind();
-MiniCmdLine.setup({
-    autocorrect = { enable = false, },
-});
+-- MiniCmdLine.setup({
+--     autocorrect = { enable = false, },
+-- });
 
 MiniPick.setup();
 MiniExtra.setup();
@@ -49,9 +49,9 @@ MiniDiff.setup(
         },
         options = {
             -- Diff algorithm (see `:h vim.text.diff()`)
-            -- algorithm = 'histogram',
+            algorithm = 'histogram',
             -- algorithm = 'myers',
-            algorithm = 'patience',
+            -- algorithm = 'patience',
         }
     }
 );
@@ -88,15 +88,15 @@ hl(0, "MiniDiffSignAdd", { fg = "#2f662f", });
 hl(0, "MiniDiffOverAdd", { bg = "#0d4928", });
 
 hl(0, "MiniDiffSignChange", { fg = "#1f3fbb", });
-hl(0, "MiniDiffOverChange", { bg = "#1f3f99", });
-hl(0, "MiniDiffOverChangeBuf", { bg = "#1f3f99", });
+hl(0, "MiniDiffOverChange", { bg = "#862f2f", });
+hl(0, "MiniDiffOverChangeBuf", { bg = "#0d8928", });
 
 hl(0, "MiniDiffSignDelete", { fg = "#662f2f", });
 hl(0, "MiniDiffOverDelete", { bg = "#662f2f", });
 hl(0, "MiniDiffOverDeleteBuf", { bg = "#662f2f", });
 
 local normal = vim.api.nvim_get_hl(0, { name = "Normal" });
-hl(0, "MiniDiffOverContext", { bg = "#005555", });
+hl(0, "MiniDiffOverContext", { bg = "#003333", });
 hl(0, "MiniDiffOverContextBuf", { bg = normal.guibg, });
 
 local MiniHiPatterns = require("mini.hipatterns");

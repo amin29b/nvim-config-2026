@@ -9,6 +9,9 @@ local usercmd = vim.api.nvim_create_user_command;
 local path_nvim_data = vim.fn.stdpath('data');
 
 
+local augroup = vim.api.nvim_create_augroup("user.cfg", { clear = true });
+local usercmd = vim.api.nvim_create_user_command;
+local path_nvim_data = vim.fn.stdpath('data');
 -- :lua vim.pack.update()
 -- :lua vim.pack.del()
 vim.pack.add({
@@ -18,7 +21,7 @@ vim.pack.add({
     { src = "https://github.com/junegunn/fzf", },
     { src = "https://github.com/junegunn/fzf.vim", },
 
-    { src = "https://github.com/kdheepak/lazygit.nvim", },
+    -- { src = "https://github.com/kdheepak/lazygit.nvim", },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", },
 
     { src = "https://github.com/neovim/nvim-lspconfig", },
@@ -27,6 +30,7 @@ vim.pack.add({
 
     { src = "https://github.com/nvim-mini/mini.nvim",             version = "stable" },
     { src = "https://github.com/sphamba/smear-cursor.nvim", },
+    { src = "https://github.com/sindrets/diffview.nvim", },
 
 });
 
@@ -46,10 +50,23 @@ end);
 
 require("options");
 require("terminal").setup();
+local MiniGit = require("mini.git");
+MiniGit.setup();
+vim.keymap.set('n', '<leader>gd', function()
+        MiniGit.show_diff_source({ target = 'both', split = 'vertical', });
+        vim.cmd("1wincmd c");
+        vim.cmd("windo diffthis");
+    end,
+    { desc = 'Git diff side-by-side' });
+
 pcall(function()
     require("mini-configs.mini-all-config");
     require("mini-configs.minifiles-config");
 end);
+
+
+
+
 
 
 
@@ -157,6 +174,7 @@ require("lsps.roslyn_ls").setup();
 -- require("lsps.ts_ls").setup();
 -- require("lsps.css_ls").setup();
 -- require("lsps.json_ls").setup();
+vim.lsp.enable("yamlls");
 
 
 require("colors2").setup();
