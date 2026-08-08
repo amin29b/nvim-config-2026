@@ -1,23 +1,4 @@
 local M = {}
-local function SpellCheck(arg)
-    local spell_restore = vim.o.spell
-    vim.o.spell = true
-
-    vim.api.nvim_create_augroup("restore_spell_option", { clear = true })
-
-    vim.api.nvim_create_autocmd({ "CursorMoved", "CompleteDone" }, {
-        buffer = 0,
-        group = "restore_spell_option",
-        once = true,
-        callback = function()
-            vim.o.spell = spell_restore
-            vim.api.nvim_del_augroup_by_name("restore_spell_option")
-        end,
-    })
-
-    return arg or ""
-end
-
 
 
 function M.setup()
@@ -79,14 +60,10 @@ function M.setup()
     vim.keymap.set("n", "<leader>so", ":source $MYVIMRC<CR>", opts)
     vim.keymap.set("n", "<leader>no", ":noh<CR>", opts)
 
-    vim.keymap.set("i", "<C-x><C-k>", function()
-        return SpellCheck("<C-x><C-k>")
-    end, { expr = true, noremap = true })
+    -- vim.keymap.set("i", "<C-x><C-k>", function()
+    --     return SpellCheck("<C-x><C-k>")
+    -- end, { expr = true, noremap = true })
 
-    vim.keymap.set("n", "z=", function()
-        SpellCheck()
-        vim.cmd("normal! z=")
-    end, { noremap = true, silent = true })
 
     vim.keymap.set("n", "<F6>", function()
         vim.fn.setreg("+", vim.fn.fnamemodify(vim.fn.expand("%"), ":p"))
@@ -153,24 +130,20 @@ function M.setup()
     ]])
 
     vim.keymap.set("v", "<space>dd", [[:<C-u>'<,'>s/\s\+$//e | noh<CR>]])
-    vim.keymap.set("n", "<space>dd", [[<CMD>s/\s\+$//e | noh<CR>]] )
+    vim.keymap.set("n", "<space>dd", [[<CMD>s/\s\+$//e | noh<CR>]])
 
-    vim.keymap.set("n", "n", "nzzzv" , {});
-    vim.keymap.set("n", "N", "Nzzzv" , {});
+    vim.keymap.set("n", "n", "nzzzv", {});
+    vim.keymap.set("n", "N", "Nzzzv", {});
 
-    vim.keymap.set("n", "<C-d>", "<C-d>zz" , {});
-    vim.keymap.set("n", "<C-u>", "<C-u>zz" , {});
+    vim.keymap.set("n", "<C-d>", "<C-d>zz", {});
+    vim.keymap.set("n", "<C-u>", "<C-u>zz", {});
 
 
     vim.keymap.set("n", "<leader>U",
         function()
-            vim.cmd.packadd("nvim.undotree");
             require("undotree").open();
-        end ,
+        end,
         {});
-
-
-
 end
 
 function M.lsp_mappings(bufnr)
@@ -206,8 +179,6 @@ function M.lsp_mappings(bufnr)
     vim.keymap.set("n", "ý", vim.lsp.buf.code_action, opts)
     vim.keymap.set("v", "ý", vim.lsp.buf.code_action, opts)
     -- vim.keymap.set("i", "þ", "<C-x><C-o>", opts)
-
-
 end
 
 function M.fzf_vim()

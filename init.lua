@@ -1,3 +1,9 @@
+vim.api.nvim_create_user_command("HELP", function()
+    -- Open help file
+    -- help file explains how to use things!
+    print("Not implemented yet!!!!");
+end, { nargs = 0 })
+
 require("vim._core.ui2").enable({});
 local vim = vim;
 local o = vim.opt;
@@ -30,9 +36,23 @@ vim.pack.add({
 
     { src = "https://github.com/nvim-mini/mini.nvim",             version = "stable" },
     { src = "https://github.com/sphamba/smear-cursor.nvim", },
+
+
+
+    { src = "https://github.com/neogitorg/neogit", },
     { src = "https://github.com/sindrets/diffview.nvim", },
 
 });
+
+vim.cmd.packadd("nvim.undotree");
+
+require("diffview").setup();
+require("neogit").setup({
+    status = {
+        recent_commit_include_author_info = true,
+    },
+});
+
 
 pcall(function()
     if vim.loop.os_uname().sysname == "Windows_NT" then
