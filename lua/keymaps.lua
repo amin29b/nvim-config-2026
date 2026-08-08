@@ -1,116 +1,117 @@
 local M = {}
-
+local map = vim.keymap.set;
+local utils = require("utils");
 
 function M.setup()
     local opts = { noremap = true, silent = true }
     local opts2 = { remap = true, silent = true }
-    -- vim.keymap.set("n", "<PageUp>", "<Nop>")
-    -- vim.keymap.set("n", "<PageDown>", "<Nop>")
+    -- map("n", "<PageUp>", "<Nop>")
+    -- map("n", "<PageDown>", "<Nop>")
 
     -- -- Space
-    vim.keymap.set("n", "<Space>", "<Nop>")
-    vim.keymap.set("v", "<Space>", "<Nop>")
+    map("n", "<Space>", "<Nop>")
+    map("v", "<Space>", "<Nop>")
 
     -- Ctrl-Space
-    vim.keymap.set("n", "<C-Space>", "<Nop>")
-    vim.keymap.set("v", "<C-Space>", "<Nop>")
-    vim.keymap.set("i", "<C-Space>", "<Nop>")
+    map("n", "<C-Space>", "<Nop>")
+    map("v", "<C-Space>", "<Nop>")
+    map("i", "<C-Space>", "<Nop>")
 
     -- Ctrl-C
-    vim.keymap.set("n", "<C-c>", "<Nop>")
-    vim.keymap.set("v", "<C-c>", "<Nop>")
-    vim.keymap.set("i", "<C-c>", "<Esc>")
-    vim.keymap.set("n", "<C-c>", ":nohl<CR>")
+    map("n", "<C-c>", "<Nop>")
+    map("v", "<C-c>", "<Nop>")
+    map("i", "<C-c>", "<Esc>")
+    map("n", "<C-c>", ":nohl<CR>")
 
-    vim.keymap.set("n", "J", "mzJ`z")
+    map("n", "J", "mzJ`z")
 
-    vim.keymap.set("n", "þ", "<Nop>")
-    vim.keymap.set("v", "þ", "<Nop>")
-    vim.keymap.set("i", "þ", "<Nop>")
+    map("n", "þ", "<Nop>")
+    map("v", "þ", "<Nop>")
+    map("i", "þ", "<Nop>")
 
-    vim.keymap.set("n", "ý", "<Nop>")
-    vim.keymap.set("v", "ý", "<Nop>")
-    vim.keymap.set("i", "ý", "<Nop>")
+    map("n", "ý", "<Nop>")
+    map("v", "ý", "<Nop>")
+    map("i", "ý", "<Nop>")
 
-    vim.keymap.set("n", "<C-S-b>", "<Nop>")
-    vim.keymap.set("n", "<C-S-B>", "<Nop>")
+    map("n", "<C-S-b>", "<Nop>")
+    map("n", "<C-S-B>", "<Nop>")
 
-    vim.keymap.set("v", ">", ">gv")
-    vim.keymap.set("v", "<", "<gv")
+    map("v", ">", ">gv")
+    map("v", "<", "<gv")
 
-    vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-    vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+    map("v", "J", ":m '>+1<CR>gv=gv")
+    map("v", "K", ":m '<-2<CR>gv=gv")
 
     -- Insert mode
-    vim.keymap.set("i", "<C-j>", "<Nop>")
-    -- vim.keymap.set("i", "<C-h>", "<Nop>", { remap = true })
+    map("i", "<C-j>", "<Nop>")
+    -- map("i", "<C-h>", "<Nop>", { remap = true })
 
     -- i for Insert mode
     -- c for Command-line mode
     -- t for Terminal mode
-    vim.keymap.set({ "i", "c", "t" }, "<C-h>", "<left>")
-    vim.keymap.set({ "i", "c", "t" }, "<C-j>", "<down>")
-    vim.keymap.set({ "i", "c", "t" }, "<C-k>", "<up>")
-    vim.keymap.set({ "i", "c", "t" }, "<C-l>", "<right>")
+    map({ "i", "c", "t" }, "<C-h>", "<left>")
+    map({ "i", "c", "t" }, "<C-j>", "<down>")
+    map({ "i", "c", "t" }, "<C-k>", "<up>")
+    map({ "i", "c", "t" }, "<C-l>", "<right>")
 
-    vim.keymap.set("n", "<C-l>", "<Nop>")
+    map("n", "<C-l>", "<Nop>")
 
 
     -- Normal mode
-    vim.keymap.set("n", "<leader>so", ":source $MYVIMRC<CR>", opts)
-    vim.keymap.set("n", "<leader>no", ":noh<CR>", opts)
+    map("n", "<leader>so", ":source $MYVIMRC<CR>", opts)
+    map("n", "<leader>no", ":noh<CR>", opts)
 
-    -- vim.keymap.set("i", "<C-x><C-k>", function()
+    -- map("i", "<C-x><C-k>", function()
     --     return SpellCheck("<C-x><C-k>")
     -- end, { expr = true, noremap = true })
 
 
-    vim.keymap.set("n", "<F6>", function()
+    map("n", "<F6>", function()
         vim.fn.setreg("+", vim.fn.fnamemodify(vim.fn.expand("%"), ":p"))
     end, { noremap = true, silent = true })
 
-    vim.keymap.set("n", "<leader>jo", '<cmd>MyProjectJumps<cr>')
-    vim.keymap.set("n", "<leader>jj", '<cmd>AddProjectJump<cr>')
+    map("n", "<leader>jo", '<cmd>MyProjectJumps<cr>')
+    map("n", "<leader>jj", '<cmd>AddProjectJump<cr>')
 
-    vim.keymap.set({ "n" }, "<leader>js", '<cmd>MyProjectSnippets<cr>')
+    map({ "n" }, "<leader>js", '<cmd>MyProjectSnippets<cr>')
 
-    -- vim.keymap.set("n", "<leader>jo", '<cmd>MyJumps<cr>')
-    -- vim.keymap.set("n", "<leader>jj", '<cmd>lua add_jump()<cr>')
+    -- map("n", "<leader>jo", '<cmd>MyJumps<cr>')
+    -- map("n", "<leader>jj", '<cmd>lua add_jump()<cr>')
 
-    -- vim.keymap.set("n", "<leader>ju", '<cmd>Jumps<cr>')
+    -- map("n", "<leader>ju", '<cmd>Jumps<cr>')
 
     local skComment = require("comment");
-    vim.keymap.set('n', '<C-k><C-c>', skComment.comment, { expr = true, desc = 'Comment line' })
-    vim.keymap.set('n', '<C-k><C-u>', skComment.uncomment, { expr = true, desc = 'Uncomment line' })
+    map('n', '<C-k><C-c>', skComment.comment, { expr = true, desc = 'Comment line' })
+    map('n', '<C-k><C-u>', skComment.uncomment, { expr = true, desc = 'Uncomment line' })
 
-    vim.keymap.set('v', '<C-k><C-c>', skComment.comment_gv, { expr = true, desc = 'Comment line' })
-    vim.keymap.set('v', '<C-k><C-u>', skComment.uncomment_gv, { expr = true, desc = 'Uncomment line' })
+    map('v', '<C-k><C-c>', skComment.comment_gv, { expr = true, desc = 'Comment line' })
+    map('v', '<C-k><C-u>', skComment.uncomment_gv, { expr = true, desc = 'Uncomment line' })
 
-    -- vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
-    vim.keymap.set("n", "<leader>B", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
-    vim.keymap.set("n", "<leader>bb", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
-    vim.keymap.set("n", "<leader>rr", "<CMD>HotRelaod<CR>", { noremap = true, desc = "HotRelaod Project" })
+    -- map("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+    map("n", "<leader>B", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
+    map("n", "<leader>bb", "<CMD>Build<CR>", { noremap = true, desc = "Build Project" })
+    map("n", "<leader>rr", "<CMD>HotRelaod<CR>", { noremap = true, desc = "HotRelaod Project" })
 
     -- vim.api.nvim_create_autocmd("FileType", {
     --     pattern = "oil",
     --     callback = function()
-    --         vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true, })
-    --         vim.keymap.set("n", "", "<cmd>close<CR>", { buffer = true, silent = true, })
+    --         map("n", "q", "<cmd>close<CR>", { buffer = true, silent = true, })
+    --         map("n", "", "<cmd>close<CR>", { buffer = true, silent = true, })
     --     end,
     -- })
 
-    vim.keymap.set("n", "*", function()
+    map("n", "*", function()
         vim.fn.setreg("/", "\\c" .. vim.fn.expand("<cword>"))
         vim.cmd("normal! n")
     end, { noremap = true })
 
-    -- vim.keymap.set("n", "#", function()
+    -- map("n", "#", function()
     --     vim.fn.setreg("/", vim.fn.expand("<cword>"))
     -- or
     -- vim.fn.setreg("/", "\\c" .. vim.fn.expand("<cword>"))
     --     vim.cmd("normal! N")
     -- end, { noremap = true })
-    vim.keymap.set("v", "<leader>tt",
+    map("v", "<leader>tt",
         function()
             require("tabular").tabular()
         end
@@ -129,17 +130,17 @@ function M.setup()
         nnoremap md <Esc><Esc>"_5r<space>4h<Esc>
     ]])
 
-    vim.keymap.set("v", "<space>dd", [[:<C-u>'<,'>s/\s\+$//e | noh<CR>]])
-    vim.keymap.set("n", "<space>dd", [[<CMD>s/\s\+$//e | noh<CR>]])
+    map("v", "<space>dd", [[:<C-u>'<,'>s/\s\+$//e | noh<CR>]])
+    map("n", "<space>dd", [[<CMD>s/\s\+$//e | noh<CR>]])
 
-    vim.keymap.set("n", "n", "nzzzv", {});
-    vim.keymap.set("n", "N", "Nzzzv", {});
+    map("n", "n", "nzzzv", {});
+    map("n", "N", "Nzzzv", {});
 
-    vim.keymap.set("n", "<C-d>", "<C-d>zz", {});
-    vim.keymap.set("n", "<C-u>", "<C-u>zz", {});
+    map("n", "<C-d>", "<C-d>zz", {});
+    map("n", "<C-u>", "<C-u>zz", {});
 
 
-    vim.keymap.set("n", "<leader>U",
+    map("n", "<leader>u",
         function()
             require("undotree").open();
         end,
@@ -149,96 +150,166 @@ end
 function M.lsp_mappings(bufnr)
     local opts = { buffer = bufnr }
 
-    vim.keymap.set("n", "<F12>", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "<F11>", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "<C-k><C-l>", vim.lsp.buf.references, opts)
+    map("n", "<F12>", vim.lsp.buf.definition, opts)
+    map("n", "<F11>", vim.lsp.buf.references, opts)
+    map("n", "<C-k><C-l>", vim.lsp.buf.references, opts)
 
-    vim.keymap.set("n", "<C-k><C-d>", vim.lsp.buf.format, opts)
-    vim.keymap.set("n", "<C-k><C-r>", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<C-k><C-i>", function()
+    map("n", "<C-k><C-d>", vim.lsp.buf.format, opts)
+    map("n", "<C-k><C-r>", vim.lsp.buf.rename, opts)
+    map("n", "<C-k><C-i>", function()
         vim.lsp.buf.hover({ border = "single" })
     end, opts)
 
 
     -- Diagnostics
-    vim.keymap.set("n", "<leader>lp", function()
-        vim.diagnostic.setqflist({ severity = { min = vim.diagnostic.severity.WARN } })
+    map("n", "<leader>lp", function()
+        vim.diagnostic.setqflist({ severity = { min = vim.diagnostic.severity.WARN } });
+        -- vim.diagnostic.setqflist({ severity = { min = vim.diagnostic.severity.ERROR } });
     end, opts)
 
     -- NOTE(^min): use ]q  and  [q
-    -- vim.keymap.set("n", "<leader>l]", '<cmd>cnext<cr>', opts)
-    -- vim.keymap.set("n", "<leader>l[", '<cmd>cprevious<cr>', opts)
+    -- map("n", "]q", function() vim.diagnostic.jump({ count = 1, float = false }); end, opts);
+    -- map("n", "[q", function() vim.diagnostic.jump({ count = -1, float = false }); end, opts);
 
-    vim.keymap.set("n", "<leader>lo", function()
-        vim.diagnostic.open_float({ border = "single" })
-    end, opts)
+    map("n", "<leader>lo",
+        function()
+            vim.diagnostic.open_float({ border = "single" });
+        end, opts);
 
 
     -- Code actions
     -- "<C-.> -> ý
-    vim.keymap.set("n", "ý", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("v", "ý", vim.lsp.buf.code_action, opts)
-    -- vim.keymap.set("i", "þ", "<C-x><C-o>", opts)
+    map("n", "ý", vim.lsp.buf.code_action, opts)
+    map("v", "ý", vim.lsp.buf.code_action, opts)
+    -- map("i", "þ", "<C-x><C-o>", opts)
 end
 
 function M.fzf_vim()
+    -- vim.cmd("autocmd FileType qf nnoremap <buffer> <CR> <CR><C-w>p");
+    vim.cmd("autocmd FileType qf nnoremap <buffer> <CR> <CR>:copen<CR>");
+    vim.cmd("autocmd FileType qf nnoremap <buffer> <leader><CR> <CR> ");
+
+
+    -- vim.api.nvim_create_autocmd("FileType", {
+    --     pattern = "qf",
+    --     callback = function()
+    --         -- Make <CR> just select/highlight without jumping
+    --         vim.keymap.set("n", "<CR>", function()
+    --             -- Just visual select current line or do nothing
+    --             vim.cmd("normal! v")
+    --             -- vim.notify("Selected item (stay in quickfix)", vim.log.levels.INFO)
+    --         end, { buffer = true, desc = "Select item without jumping" })
+    --
+    --         -- Make <leader><CR> do the original jump behavior
+    --         vim.keymap.set("n", "<leader><CR>", function()
+    --             -- Original <CR> behavior: jump to location
+    --             -- This is the default quickfix behavior
+    --             vim.cmd("normal! <CR>")
+    --         end, { buffer = true, desc = "Jump to selected item" })
+    --     end
+    -- })
+    -- vim.cmd("autocmd FileType qf nnoremap <buffer> <CR> <Nop>");
     -- local opts = { buffer = bufnr }
-    local opts = {}
+    local opts = {};
 
-    vim.keymap.set("n", "<leader>/", "<cmd>BLines<cr>", opts)
+    -- map("n", "<leader>/", "<cmd>BLines<cr>", opts);
+    map("n", "<leader>/",
+        function()
+            vim.ui.input({ prompt = "Search Buffer: " },
+                function(query)
+                    if not query or query == "" then
+                        return
+                    end
 
-    vim.keymap.set("v", "<leader>/",
-        function() -- grep visual selection in current buffer
-            local query = require("utils").get_visual_selection()
+                    -- local pattern = vim.fn.escape(query, [[\/]])
+                    local pattern = query;
+
+                    vim.cmd("silent! vimgrep /" .. pattern .. "/j %");
+                    vim.cmd("silent! copen");
+                end);
+        end
+        , opts);
+
+
+    -- map("v", "<leader>/",
+    --     function() -- grep visual selection in current buffer
+    --         local query = require("utils").get_visual_selection();
+    --         if query == "" then
+    --             return;
+    --         end
+    --         vim.cmd("BLines " .. query);
+    --     end
+    --     , opts);
+
+    map("v", "<leader>/",
+        function()
+            local query = utils.get_visual_selection();
             if query == "" then
-                return
+                return;
             end
-            vim.cmd("BLines " .. query)
+
+            vim.cmd("silent! vimgrep /" .. query .. "/j %");
+            vim.cmd("silent! copen");
         end
-        , opts)
+        , opts);
 
 
 
-    vim.keymap.set("n", "<leader>g/",
+    -- map("n", "<leader>g/",
+    --     function()
+    --         local cwd = utils.FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/") -- IMPORTANT on Windows
+    --         vim.cmd(string.format([[
+    --             call fzf#vim#grep(
+    --             \   'rg  --with-filename  --column --line-number --no-heading --color=always --smart-case '.shellescape(""),
+    --             \       1,
+    --             \       fzf#vim#with_preview({ 'dir' : '%s' ,'options': '--delimiter : --nth 3..'},'down', 'ctrl-/'),
+    --             \       !0
+    --             \   )
+    --         ]], cwd));
+    --     end
+    --     , opts);
+    map("n", "<leader>g/",
         function()
-            local cwd = require("utils").FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/") -- IMPORTANT on Windows
-            vim.cmd(string.format([[
-                call fzf#vim#grep(
-                \   'rg  --with-filename  --column --line-number --no-heading --color=always --smart-case '.shellescape(""),
-                \       1,
-                \       fzf#vim#with_preview({ 'dir' : '%s' ,'options': '--delimiter : --nth 3..'},'down', 'ctrl-/'),
-                \       !0
-                \   )
-            ]], cwd))
+            local dir_proj_root = utils.FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/"); -- IMPORTANT on Windows
+            local path = vim.fn.fnameescape(dir_proj_root) .. "/**";
+
+            vim.ui.input({ prompt = "Search From Root: " },
+                function(query)
+                    if not query or query == "" then
+                        return
+                    end
+
+                    -- local pattern = vim.fn.escape(query, [[\/]])
+                    local pattern = query;
+
+                    vim.cmd("silent! vimgrep /" .. pattern .. "/j " .. path);
+                    vim.cmd("silent! copen");
+                end);
         end
-        , opts)
+        , opts);
 
 
-    -- fndprjroot
-    vim.keymap.set("v", "<leader>g/",
+
+    map("v", "<leader>g/",
         function()
-            local query = require("utils").get_visual_selection()
+            local query = utils.get_visual_selection();
             if query == "" then
-                return
+                return;
             end
-            local cwd = require("utils").FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/") -- IMPORTANT on Windows
 
-            vim.cmd(string.format([[
-                call fzf#vim#grep(
-                \   'rg  --with-filename  --column --line-number --no-heading --color=always --smart-case '.shellescape(""),
-                \       1,
-                \       fzf#vim#with_preview({  'dir' : '%s' ,'options': '--query="%s"   --delimiter : --nth 3..'},'down', 'ctrl-/'),
-                \       !0
-                \   )
-            ]], cwd, vim.fn.shellescape(query)))
+            local dir_proj_root = utils.FindProjectRoot({ "*.root", ".git" }):gsub("\\", "/"); -- IMPORTANT on Windows
+            local path = vim.fn.fnameescape(dir_proj_root) .. "/**";
+
+            vim.cmd("silent! vimgrep /" .. query .. "/j " .. path);
+            vim.cmd("silent! copen");
         end
-        , opts)
+        , opts);
 
-    vim.keymap.set("n", "<leader>ls",
+    map("n", "<leader>ls",
         function()
-            vim.cmd("Buffers")
+            vim.cmd("Buffers");
         end
-        , opts)
+        , opts);
 end
 
-return M
+return M;

@@ -1,17 +1,17 @@
-vim.api.nvim_set_hl(0, "DiagWarn", { fg = "#bbbb00", bg = "none" })
-vim.api.nvim_set_hl(0, "DiagErr", { fg = "#770000", bg = "none" })
+vim.api.nvim_set_hl(0, "DiagWarn", { fg = "#bbbb44", bg = "none", bold = true, });
+vim.api.nvim_set_hl(0, "DiagErr", { fg = "#bb4444", bg = "none", bold = true, });
 local function lsp_status()
     local attached_clients = vim.lsp.get_clients({ bufnr = 0 })
     if #attached_clients == 0 then
-        return ""
+        return "";
     end
     local names = vim.iter(attached_clients)
         :map(function(client)
             local name = client.name:gsub("language.server", "ls")
             return name
         end)
-        :totable()
-    return "[" .. table.concat(names, ", ") .. "]"
+        :totable();
+    return "[" .. table.concat(names, ", ") .. "]";
 end
 
 local modes = {
@@ -82,9 +82,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
             vim.b.full_path = full_path;
 
             -- print(full_path);
-            local root = vim.fn.system("git rev-parse --show-toplevel"):gsub("%s+$", "");
+            local root = vim.fn.system("git rev-parse --show-toplevel  2>$null"):gsub("%s+$", "");
             if root ~= "" then
-                vim.b.git_branch = vim.fn.system("git branch --show-current"):gsub("%s+$", "");
+                vim.b.git_branch = vim.fn.system("git branch --show-current  2>$null"):gsub("%s+$", "");
                 vim.b.rel_path = vim.fn.expand("%:p"):sub(#root + 2);
             else
                 vim.b.git_branch = nil;
