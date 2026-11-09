@@ -72,6 +72,11 @@ end, {});
 MiniStarter.setup({
     header = "",
     items = {
+        {
+            name = "New buffer",
+            action = "enew",
+            section = "Actions"
+        },
         MiniStarter.sections.recent_files(10, false, false, function(path)
             return vim.fn.fnamemodify(path, ":~:.")
         end),

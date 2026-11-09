@@ -33,9 +33,17 @@
       "rev": "7b6cc8949f9999c5ed91436cbe24aa5f99c42025",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
+    "oil.nvim": {
+      "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "powershell.nvim": {
+      "rev": "faafb829db0979b4a5962fe0d10a58830413bcd2",
+      "src": "https://github.com/TheLeoP/powershell.nvim"
     },
     "roslyn.nvim": {
       "rev": "7d8c166a0c70473ffa558d4d2430769d581fa8dd",

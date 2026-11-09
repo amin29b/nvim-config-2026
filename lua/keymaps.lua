@@ -9,17 +9,13 @@ function M.setup()
     -- map("n", "<PageDown>", "<Nop>")
 
     -- -- Space
-    map("n", "<Space>", "<Nop>")
-    map("v", "<Space>", "<Nop>")
+    map({ "n", "v" }, "<Space>", "<Nop>")
 
     -- Ctrl-Space
-    map("n", "<C-Space>", "<Nop>")
-    map("v", "<C-Space>", "<Nop>")
-    map("i", "<C-Space>", "<Nop>")
+    map({ "n", "i", "v" }, "<C-Space>", "<Nop>")
 
     -- Ctrl-C
-    map("n", "<C-c>", "<Nop>")
-    map("v", "<C-c>", "<Nop>")
+    map({ "n", "v" }, "<C-c>", "<Nop>")
     map("i", "<C-c>", "<Esc>")
     map("n", "<C-c>", ":nohl<CR>")
 
@@ -130,8 +126,11 @@ function M.setup()
         nnoremap md <Esc><Esc>"_5r<space>4h<Esc>
     ]])
 
-    map("v", "<space>dd", [[:<C-u>'<,'>s/\s\+$//e | noh<CR>]])
-    map("n", "<space>dd", [[<CMD>s/\s\+$//e | noh<CR>]])
+    map("v", "<leader>D", [[:<C-u>'<,'>s/\s\+$//e | noh<CR>]])
+    map("n", "<leader>D", [[<CMD>s/\s\+$//e | noh<CR>]])
+
+    map({ "n", "v" }, "<leader>d", '"_d')
+    map({ "n", "v" }, "<leader>x", '"_x')
 
     map("n", "n", "nzzzv", {});
     map("n", "N", "Nzzzv", {});

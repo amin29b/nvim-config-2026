@@ -4,7 +4,8 @@ vim.api.nvim_create_user_command("HELP", function()
     print("Not implemented yet!!!!");
 end, { nargs = 0 })
 
-require("vim._core.ui2").enable({});
+require("options");
+
 local vim = vim;
 local o = vim.opt;
 local g = vim.g;
@@ -33,7 +34,10 @@ vim.pack.add({
     { src = "https://github.com/neovim/nvim-lspconfig", },
     { src = "https://github.com/mason-org/mason.nvim", },
     { src = "https://github.com/seblyng/roslyn.nvim", },
+    { src = "https://github.com/TheLeoP/powershell.nvim", },
 
+
+    { src = "https://github.com/stevearc/oil.nvim", },
     { src = "https://github.com/nvim-mini/mini.nvim",             version = "stable" },
     { src = "https://github.com/sphamba/smear-cursor.nvim", },
 
@@ -68,7 +72,6 @@ pcall(function()
 end);
 
 
-require("options");
 require("terminal").setup();
 local MiniGit = require("mini.git");
 MiniGit.setup();
@@ -181,23 +184,32 @@ registry.refresh(function()
     end
 end);
 
---vim.lsp.semantic_tokens.enable(false);
+vim.lsp.semantic_tokens.enable(false);
 
 
 
 
 require("lsps.lua_ls").setup();
 require("lsps.roslyn_ls").setup();
--- require("lsps.c_ls").setup();
+require("lsps.c_ls").setup();
 -- require("lsps.lua_ls").setup();
 -- require("lsps.html_ls").setup();
--- require("lsps.ts_ls").setup();
+require("lsps.ts_ls").setup();
 -- require("lsps.css_ls").setup();
 -- require("lsps.json_ls").setup();
+
 vim.lsp.enable("yamlls");
 
+require('powershell').setup({
+    bundle_path = path_nvim_data .. "/../nvim-data-00/nvim-data-mason/packages/powershell-editor-services/",
+})
+-- vim.lsp.config('powershell_es', {
+--     bundle_path = 'C:/Users/ujm/AppData/Local/nvim-data-00/nvim-data-mason/packages/powershell-editor-services/PowerShellEditorServices',
+--     shell = 'powershell.exe',
+-- });
+-- vim.lsp.enable('powershell_es');
 
-require("colors2").setup();
+
 
 
 require('nvim-treesitter').setup({
@@ -214,6 +226,9 @@ require('nvim-treesitter').install({
     "c_sharp",
     "json",
     "markdown",
+    "javascript",
+    "typescript",
+    "jsdoc",
 }):wait(300000); -- wait max. 5 minutes
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -232,3 +247,88 @@ vim.api.nvim_create_autocmd("LspAttach", {
         require("keymaps").lsp_mappings(bufnr);
     end,
 });
+
+
+-- [runners] ------------------------------------------------------------------
+do
+    ---@param cmd string
+    ---@param opts? { floating?: boolean, gap?: integer } gap is in cells, applied on all sides
+    local function new_runner(cmd, opts)
+        opts = opts or {}
+        local gap = opts.gap or 2
+
+        return function()
+            local buf = vim.api.nvim_create_buf(false, true)
+
+            -- buf already exists at this point, so just set the keymap
+            -- directly instead of stacking a new global TermOpen
+            -- autocmd every time the runner is invoked
+            vim.keymap.set("t", "<Esc>", "<Esc>", { buffer = buf })
+
+            local width, height, row, col
+            if opts.floating then
+                width = vim.o.columns - (gap * 2)
+                height = vim.o.lines - (gap * 2) - vim.o.cmdheight
+                row = gap
+                col = gap
+            else
+                width = vim.o.columns
+                height = vim.o.lines
+                row = 0
+                col = 0
+            end
+
+            local win = vim.api.nvim_open_win(buf, true, {
+                relative = "editor",
+                row = row,
+                col = col,
+                width = width,
+                height = height,
+                style = "minimal",
+                -- border = opts.floating and "rounded" or "none",
+                border = "none",
+                -- title = cmd,
+            })
+
+            -- vim likes to color it with your theme
+            -- reset it
+            vim.api.nvim_set_hl(0, "TerminalReset", {
+                bg = "#000000",
+                fg = "#ffffff",
+                ctermbg = 0,
+                ctermfg = 7,
+            })
+
+            vim.wo[win].winhighlight = "Normal:TerminalReset,NormalFloat:TerminalReset,EndOfBuffer:TerminalReset"
+            vim.bo[buf].syntax = "off"
+            vim.bo[buf].filetype = "terminal"
+
+            vim.fn.jobstart(cmd, {
+                term = true,
+                on_exit = function()
+                    if vim.api.nvim_win_is_valid(win) then
+                        vim.api.nvim_win_close(win, true)
+                    end
+                    if vim.api.nvim_buf_is_valid(buf) then
+                        vim.api.nvim_buf_delete(buf, { force = true })
+                    end
+                end,
+            })
+
+            vim.cmd("startinsert")
+        end
+    end
+
+    -- Example Usage --------------------------------------------------------------------
+
+    -- local lazygit = new_runner("lazygit", { floating = true })
+    -- vim.api.nvim_create_user_command("LazyGit", lazygit, {})
+    -- map({ "n", "x" }, "<leader>l", lazygit)
+    --
+    -- local scooter = new_runner("scooter", { floating = true })
+    -- vim.api.nvim_create_user_command("Scooter", scooter, {})
+    -- map({ "n", "x" }, "<leader>s", scooter)
+
+    -- vim.lsp.inlay_hint.enable()
+end
+
